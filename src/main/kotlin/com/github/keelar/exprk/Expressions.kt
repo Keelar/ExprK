@@ -9,7 +9,7 @@ class ExpressionException internal constructor(message: String)
     : RuntimeException(message)
 
 @Suppress("unused")
-class Expression {
+class Expressions {
 
     private var mathContext = MathContext.DECIMAL64
     private val variables: LinkedHashMap<String, Expr> = linkedMapOf()
@@ -20,37 +20,37 @@ class Expression {
     val roundingMode: RoundingMode
         get() = mathContext.roundingMode
 
-    fun setPrecision(precision: Int): Expression {
+    fun setPrecision(precision: Int): Expressions {
         mathContext = MathContext(precision, mathContext.roundingMode)
 
         return this
     }
 
-    fun setRoundingMode(roundingMode: RoundingMode): Expression {
+    fun setRoundingMode(roundingMode: RoundingMode): Expressions {
         mathContext = MathContext(mathContext.precision, roundingMode)
 
         return this
     }
 
-    fun define(name: String, value: Long): Expression {
+    fun define(name: String, value: Long): Expressions {
         define(name, value.toString())
 
         return this
     }
 
-    fun define(name: String, value: Double): Expression {
+    fun define(name: String, value: Double): Expressions {
         define(name, value.toString())
 
         return this
     }
 
-    fun define(name: String, value: BigDecimal): Expression {
+    fun define(name: String, value: BigDecimal): Expressions {
         define(name, value.toString())
 
         return this
     }
 
-    fun define(name: String, expression: String): Expression {
+    fun define(name: String, expression: String): Expressions {
         val expr = parse(expression)
         variables += name to expr
 
