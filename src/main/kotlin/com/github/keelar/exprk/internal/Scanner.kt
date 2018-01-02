@@ -29,14 +29,14 @@ internal class Scanner(private val source: String,
         val c = advance()
 
         when (c) {
-            '(' -> addToken(LEFT_PAREN)
-            ')' -> addToken(RIGHT_PAREN)
-            '-' -> addToken(MINUS)
             '+' -> addToken(PLUS)
+            '-' -> addToken(MINUS)
             '*' -> addToken(STAR)
             '/' -> addToken(SLASH)
             '%' -> addToken(MODULO)
             '^' -> addToken(EXPONENT)
+            '(' -> addToken(LEFT_PAREN)
+            ')' -> addToken(RIGHT_PAREN)
             ' ',
             '\r',
             '\t' -> {
