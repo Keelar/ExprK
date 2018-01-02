@@ -46,7 +46,7 @@ internal class Scanner(private val source: String,
                 when {
                     c.isDigit() -> number()
                     c.isAlpha() -> identifier()
-                    else -> ExpressionException("Unexpected character '$c'")
+                    else -> throw ExpressionException("Unexpected character '$c'")
                 }
             }
         }
