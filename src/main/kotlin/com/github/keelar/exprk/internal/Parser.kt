@@ -38,7 +38,7 @@ internal class Parser(private val tokens: List<Token>) {
     private fun multiplication(): Expr {
         var left = unary()
 
-        while (match(STAR, SLASH)) {
+        while (match(STAR, SLASH, MODULO)) {
             val operator = previous()
             val right = unary()
 

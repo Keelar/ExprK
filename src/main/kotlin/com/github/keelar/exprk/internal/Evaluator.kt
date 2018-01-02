@@ -46,6 +46,7 @@ internal class Evaluator(private val mathContext: MathContext) : ExprVisitor<Big
             MINUS -> left.minus(right)
             STAR -> left.times(right)
             SLASH -> left.divide(right, mathContext)
+            MODULO -> left.remainder(right, mathContext)
             EXPONENT -> left.pow(right)
             else -> throw ExpressionException(
                     "Invalid binary operator '${expr.operator.lexeme}'")

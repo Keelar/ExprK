@@ -35,6 +35,7 @@ internal class Scanner(private val source: String,
             '+' -> addToken(PLUS)
             '*' -> addToken(STAR)
             '/' -> addToken(SLASH)
+            '%' -> addToken(MODULO)
             '^' -> addToken(EXPONENT)
             ' ',
             '\r',
