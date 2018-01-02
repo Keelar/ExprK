@@ -4,6 +4,10 @@ import java.math.MathContext
 import com.github.keelar.exprk.ExpressionException
 import com.github.keelar.exprk.internal.TokenType.*
 
+private fun invalidToken(c: Char) {
+    throw ExpressionException("Invalid token '$c'")
+}
+
 internal class Scanner(private val source: String,
                        private val mathContext: MathContext) {
 
@@ -29,24 +33,30 @@ internal class Scanner(private val source: String,
         val c = advance()
 
         when (c) {
+            ' ',
+            '\r',
+            '\t' -> {
+                // Ignore whitespace.
+            }
             '+' -> addToken(PLUS)
             '-' -> addToken(MINUS)
             '*' -> addToken(STAR)
             '/' -> addToken(SLASH)
             '%' -> addToken(MODULO)
             '^' -> addToken(EXPONENT)
+            '=' -> if (match('=')) addToken(EQUAL_EQUAL) else invalidToken(c)
+            '!' -> if (match('=')) addToken(NOT_EQUAL) else invalidToken(c)
+            '>' -> if (match('=')) addToken(GREATER_EQUAL) else addToken(GREATER)
+            '<' -> if (match('=')) addToken(LESS_EQUAL) else addToken(LESS)
+            '|' -> if (match('|')) addToken(BAR_BAR) else invalidToken(c)
+            '&' -> if (match('&')) addToken(AMP_AMP) else invalidToken(c)
             '(' -> addToken(LEFT_PAREN)
             ')' -> addToken(RIGHT_PAREN)
-            ' ',
-            '\r',
-            '\t' -> {
-                // Ignore whitespace.
-            }
             else -> {
                 when {
                     c.isDigit() -> number()
                     c.isAlpha() -> identifier()
-                    else -> throw ExpressionException("Unexpected character '$c'")
+                    else -> invalidToken(c)
                 }
             }
         }
@@ -90,6 +100,14 @@ internal class Scanner(private val source: String,
         } else {
             source[current + 1]
         }
+    }
+
+    private fun match(expected: Char): Boolean {
+        if (isAtEnd()) return false
+        if (source[current] != expected) return false
+
+        current++
+        return true
     }
 
     private fun addToken(type: TokenType) = addToken(type, null)

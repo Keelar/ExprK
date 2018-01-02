@@ -2,13 +2,25 @@ package com.github.keelar.exprk.internal
 
 internal enum class TokenType {
 
-    // Single char tokens
+    // Basic operators
     PLUS,
     MINUS,
     STAR,
     SLASH,
     MODULO,
     EXPONENT,
+
+    // Logical operators
+    EQUAL_EQUAL,
+    NOT_EQUAL,
+    GREATER,
+    GREATER_EQUAL,
+    LESS,
+    LESS_EQUAL,
+    BAR_BAR,
+    AMP_AMP,
+
+    // Parentheses
     LEFT_PAREN,
     RIGHT_PAREN,
 

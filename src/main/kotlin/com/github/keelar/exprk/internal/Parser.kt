@@ -19,7 +19,59 @@ internal class Parser(private val tokens: List<Token>) {
     }
 
     private fun expression(): Expr {
-        return addition()
+        return or()
+    }
+
+    private fun or(): Expr {
+        var expr = and()
+
+        while (match(BAR_BAR)) {
+            val operator = previous()
+            val right = and()
+
+            expr = LogicalExpr(expr, operator, right)
+        }
+
+        return expr
+    }
+
+    private fun and(): Expr {
+        var expr = equality()
+
+        while (match(AMP_AMP)) {
+            val operator = previous()
+            val right = equality()
+
+            expr = LogicalExpr(expr, operator, right)
+        }
+
+        return expr
+    }
+
+    private fun equality(): Expr {
+        var left = comparison()
+
+        while (match(EQUAL_EQUAL, NOT_EQUAL)) {
+            val operator = previous()
+            val right = comparison()
+
+            left = BinaryExpr(left, operator, right)
+        }
+
+        return left
+    }
+
+    private fun comparison(): Expr {
+        var left = addition()
+
+        while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+            val operator = previous()
+            val right = addition()
+
+            left = BinaryExpr(left, operator, right)
+        }
+
+        return left
     }
 
     private fun addition(): Expr {
