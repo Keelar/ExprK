@@ -50,6 +50,7 @@ internal class Scanner(private val source: String,
             '<' -> if (match('=')) addToken(LESS_EQUAL) else addToken(LESS)
             '|' -> if (match('|')) addToken(BAR_BAR) else invalidToken(c)
             '&' -> if (match('&')) addToken(AMP_AMP) else invalidToken(c)
+            ',' -> addToken(COMMA)
             '(' -> addToken(LEFT_PAREN)
             ')' -> addToken(RIGHT_PAREN)
             else -> {

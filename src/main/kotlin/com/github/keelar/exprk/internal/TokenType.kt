@@ -20,6 +20,9 @@ internal enum class TokenType {
     BAR_BAR,
     AMP_AMP,
 
+    // Other
+    COMMA,
+
     // Parentheses
     LEFT_PAREN,
     RIGHT_PAREN,

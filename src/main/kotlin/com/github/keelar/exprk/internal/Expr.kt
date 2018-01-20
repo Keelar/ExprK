@@ -37,6 +37,15 @@ internal class UnaryExpr(val operator: Token,
 
 }
 
+internal class CallExpr(val name: String,
+                        val arguments: List<Expr>) : Expr() {
+
+    override fun <R> accept(visitor: ExprVisitor<R>): R {
+        return visitor.visitCallExpr(this)
+    }
+
+}
+
 internal class LiteralExpr(val value: BigDecimal) : Expr() {
 
     override fun <R> accept(visitor: ExprVisitor<R>): R {
@@ -68,6 +77,8 @@ internal interface ExprVisitor<out R> {
     fun visitBinaryExpr(expr: BinaryExpr): R
 
     fun visitUnaryExpr(expr: UnaryExpr): R
+
+    fun visitCallExpr(expr: CallExpr): R
 
     fun visitLiteralExpr(expr: LiteralExpr): R
 

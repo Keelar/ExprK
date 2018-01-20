@@ -9,9 +9,16 @@ import java.math.RoundingMode
 internal class Evaluator(private val mathContext: MathContext) : ExprVisitor<BigDecimal> {
 
     private val variables: LinkedHashMap<String, BigDecimal> = linkedMapOf()
+    private val functions: MutableMap<String, Function> = mutableMapOf()
 
     fun define(name: String, expr: Expr): Evaluator {
         variables += name to eval(expr)
+
+        return this
+    }
+
+    fun addFunction(name: String, function: Function): Evaluator {
+        functions += name to function
 
         return this
     }
@@ -63,6 +70,14 @@ internal class Evaluator(private val mathContext: MathContext) : ExprVisitor<Big
             }
             else -> throw ExpressionException("Invalid unary operator")
         }
+    }
+
+    override fun visitCallExpr(expr: CallExpr): BigDecimal {
+        val name = expr.name
+        val function = functions[name] ?:
+                throw ExpressionException("Undefined function '$name'")
+
+        return function.call(expr.arguments.map { eval(it) })
     }
 
     override fun visitLiteralExpr(expr: LiteralExpr): BigDecimal {

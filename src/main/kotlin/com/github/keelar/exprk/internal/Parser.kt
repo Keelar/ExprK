@@ -112,7 +112,7 @@ internal class Parser(private val tokens: List<Token>) {
     }
 
     private fun exponent(): Expr {
-        var left = primary()
+        var left = call()
 
         if (match(EXPONENT)) {
             val operator = previous()
@@ -122,6 +122,27 @@ internal class Parser(private val tokens: List<Token>) {
         }
 
         return left
+    }
+
+    private fun call(): Expr {
+        if (matchTwo(IDENTIFIER, LEFT_PAREN)) {
+            val (name, _) = previousTwo()
+
+            val arguments = mutableListOf<Expr>()
+
+            if (!check(RIGHT_PAREN)) {
+                do {
+                    arguments += expression()
+                } while (match(COMMA))
+            }
+
+            consume(RIGHT_PAREN, "Expected ')' after function arguments")
+
+            return CallExpr(name.lexeme, arguments)
+        }
+
+
+        return primary()
     }
 
     private fun primary(): Expr {
@@ -156,10 +177,15 @@ internal class Parser(private val tokens: List<Token>) {
         return false
     }
 
-    private fun consume(type: TokenType, message: String): Token {
-        if (check(type)) return advance()
+    private fun matchTwo(first: TokenType, second: TokenType): Boolean {
+        val start = current
 
-        throw ExpressionException(message)
+        if (match(first) && match(second)) {
+            return true
+        }
+
+        current = start
+        return false
     }
 
     private fun check(tokenType: TokenType): Boolean {
@@ -168,6 +194,12 @@ internal class Parser(private val tokens: List<Token>) {
         } else {
             peek().type === tokenType
         }
+    }
+
+    private fun consume(type: TokenType, message: String): Token {
+        if (check(type)) return advance()
+
+        throw ExpressionException(message)
     }
 
     private fun advance(): Token {
@@ -181,5 +213,7 @@ internal class Parser(private val tokens: List<Token>) {
     private fun peek() = tokens[current]
 
     private fun previous() = tokens[current - 1]
+
+    private fun previousTwo() = Pair(tokens[current - 2], tokens[current - 1])
 
 }
