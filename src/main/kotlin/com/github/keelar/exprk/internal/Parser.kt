@@ -141,7 +141,6 @@ internal class Parser(private val tokens: List<Token>) {
             return CallExpr(name.lexeme, arguments)
         }
 
-
         return primary()
     }
 
