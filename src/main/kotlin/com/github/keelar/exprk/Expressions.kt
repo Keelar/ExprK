@@ -152,6 +152,17 @@ class Expressions {
         return this
     }
 
+    fun addFunction(name: String, func: (List<BigDecimal>) -> BigDecimal): Expressions {
+        functions += name to object : Function() {
+            override fun call(arguments: List<BigDecimal>): BigDecimal {
+                return func(arguments)
+            }
+
+        }
+
+        return this
+    }
+
     fun eval(expression: String): BigDecimal {
         val evaluator = Evaluator(mathContext)
 

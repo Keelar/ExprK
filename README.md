@@ -140,15 +140,13 @@ val result = Expressions()
 ````
 You can add new functions with the `addFunction` method.
 ````kotlin
-val results = Expressions()
-    .addFunction("min", object : Function() {
-        override fun call(arguments: List<BigDecimal>): BigDecimal {
-            if (arguments.isEmpty()) throw ExpressionException(
-                    "min requires at least one argument")
+val result = Expressions()
+    .addFunction("min") { arguments ->
+        if (arguments.isEmpty()) throw ExpressionException(
+                "min requires at least one argument")
 
-            return arguments.min()!!
-        }
-    })
+        arguments.min()!!
+    }
     .eval("min(4, 8, 16)") // returns 4
 ````
 You can set the precision and rounding mode with `setPrecision` and `setRoundingMode`.
