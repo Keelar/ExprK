@@ -105,7 +105,7 @@ A simple mathematical expression evaluator for Kotlin and Java, written in Kotli
     </tr>
     <tr>
         <td>max(<i>expression, ...</i>)</td>
-        <td>Returns the value or the largest argument</td>
+        <td>Returns the value of the largest argument</td>
     </tr>
     <tr>
         <td>if(<i>condition, trueValue, falseValue</i>)</td>
