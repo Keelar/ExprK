@@ -19,7 +19,25 @@ internal class Parser(private val tokens: List<Token>) {
     }
 
     private fun expression(): Expr {
-        return or()
+        return assignment()
+    }
+
+    private fun assignment(): Expr {
+        val expr = or()
+
+        if (match(ASSIGN)) {
+            val value = assignment()
+
+            if (expr is VariableExpr) {
+                val name = expr.name
+
+                return AssignExpr(name, value)
+            } else {
+                throw ExpressionException("Invalid assignment target")
+            }
+        }
+
+        return expr
     }
 
     private fun or(): Expr {

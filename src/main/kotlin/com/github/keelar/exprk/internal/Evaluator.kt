@@ -6,13 +6,18 @@ import java.math.BigDecimal
 import java.math.MathContext
 import java.math.RoundingMode
 
-internal class Evaluator(private val mathContext: MathContext) : ExprVisitor<BigDecimal> {
+internal class Evaluator() : ExprVisitor<BigDecimal> {
+    internal var mathContext: MathContext = MathContext.DECIMAL64
 
     private val variables: LinkedHashMap<String, BigDecimal> = linkedMapOf()
     private val functions: MutableMap<String, Function> = mutableMapOf()
 
+    private fun define(name: String, value: BigDecimal) {
+        variables += name to value
+    }
+
     fun define(name: String, expr: Expr): Evaluator {
-        variables += name to eval(expr)
+        define(name, eval(expr))
 
         return this
     }
@@ -25,6 +30,14 @@ internal class Evaluator(private val mathContext: MathContext) : ExprVisitor<Big
 
     fun eval(expr: Expr): BigDecimal {
         return expr.accept(this)
+    }
+
+    override fun visitAssignExpr(expr: AssignExpr): BigDecimal {
+        val value = eval(expr.value)
+
+        define(expr.name.lexeme, value)
+
+        return value
     }
 
     override fun visitLogicalExpr(expr: LogicalExpr): BigDecimal {

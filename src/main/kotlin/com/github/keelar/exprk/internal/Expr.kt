@@ -8,6 +8,15 @@ internal sealed class Expr {
 
 }
 
+internal class AssignExpr(val name: Token,
+                          val value: Expr) : Expr() {
+
+    override fun <R> accept(visitor: ExprVisitor<R>): R {
+        return visitor.visitAssignExpr(this)
+    }
+
+}
+
 internal class LogicalExpr(val left: Expr,
                            val operator: Token,
                            val right: Expr) : Expr() {
@@ -71,6 +80,8 @@ internal class GroupingExpr(val expression: Expr) : Expr() {
 }
 
 internal interface ExprVisitor<out R> {
+
+    fun visitAssignExpr(expr: AssignExpr): R
 
     fun visitLogicalExpr(expr: LogicalExpr): R
 
