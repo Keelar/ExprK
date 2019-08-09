@@ -132,7 +132,7 @@ class Expressions {
     }
 
     fun define(name: String, value: BigDecimal): Expressions {
-        define(name, value.toString())
+        define(name, value.toPlainString())
 
         return this
     }
