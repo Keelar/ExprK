@@ -32,4 +32,21 @@ class TestExpressions {
         assertEquals(BigDecimal("1e+7").minus(BigDecimal("52132e-2")).toPlainString(),
                      expr.eval("1E+7-52132e-2").toPlainString())
     }
+
+    @Test
+    fun `test is functions are ignore case`(){
+        val expr = Expressions()
+        assertEquals(listOf(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ONE).min(),
+                     expr.eval("mIN(-1,0,1)"))
+
+        assertEquals(listOf(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ONE).max(),
+                     expr.eval("MaX(-1,0,1)"))
+    }
+
+    @Test
+    fun `test is variables are ignore case`(){
+        val expr = Expressions()
+        assertEquals(BigDecimal(Math.PI.toString()), expr.eval("pI"))
+        assertEquals(BigDecimal(Math.E.toString()), expr.eval("E"))
+    }
 }
