@@ -165,6 +165,21 @@ class Expressions {
         return evaluator.eval(parse(expression))
     }
 
+	/**
+	 * eval an expression then round it with {@link Evaluator#mathContext} and call toEngineeringString <br>
+	 * if error will return message from Throwable
+	 * @param expression String
+	 * @return String
+	 */
+    fun evalToString(expression: String): String {
+        return try {
+            evaluator.eval(parse(expression)).round(evaluator.mathContext).stripTrailingZeros()
+                    .toEngineeringString()
+        }catch (e:Throwable){
+            e.cause?.message ?: e.message ?: "unknown error"
+        }
+    }
+
     private fun parse(expression: String): Expr {
         return parse(scan(expression))
     }
