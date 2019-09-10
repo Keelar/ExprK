@@ -126,7 +126,7 @@ class Expressions {
     }
 
     fun define(name: String, value: Double): Expressions {
-        define(name.toLowerCase(), value.toString())
+        define(name, value.toString())
 
         return this
     }
