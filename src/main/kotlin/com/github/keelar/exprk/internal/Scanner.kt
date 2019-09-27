@@ -63,13 +63,23 @@ internal class Scanner(private val source: String,
         }
     }
 
+    private fun isDigit(char: Char,
+                        previousChar: Char = '\u0000',
+                        nextChar: Char = '\u0000'): Boolean {
+        return char.isDigit() || when (char) {
+            '.'      -> true
+            'e', 'E' -> previousChar.isDigit() && (nextChar.isDigit() || nextChar == '+' || nextChar == '-')
+            '+', '-' -> (previousChar == 'e' || previousChar == 'E') && nextChar.isDigit()
+            else     -> false
+        }
+    }
+
     private fun number() {
         while (peek().isDigit()) advance()
 
-        if (peek() == '.' && peekNext().isDigit()) {
+        if (isDigit(peek(), peekPrevious(), peekNext())) {
             advance()
-
-            while (peek().isDigit()) advance()
+            while (isDigit(peek(), peekPrevious(), peekNext())) advance()
         }
 
         val value = source
@@ -94,6 +104,8 @@ internal class Scanner(private val source: String,
             source[current]
         }
     }
+
+    private fun peekPrevious(): Char = if (current > 0) source[current - 1] else '\u0000'
 
     private fun peekNext(): Char {
         return if (current + 1 >= source.length) {
@@ -124,6 +136,6 @@ internal class Scanner(private val source: String,
             || this in 'A'..'Z'
             || this == '_'
 
-    private fun Char.isDigit() = this in '0'..'9'
+    private fun Char.isDigit() = this == '.' || this in '0'..'9'
 
 }

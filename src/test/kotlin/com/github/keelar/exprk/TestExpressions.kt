@@ -13,4 +13,40 @@ class TestExpressions {
         expr.define("SCIVAL", scival)
         assertEquals(scival.toPlainString(), expr.eval("SCIVAL").toPlainString())
     }
+
+    @Test
+    fun `test Scanner will scan scientific form correctly`(){
+        val expr = Expressions()
+        assertEquals(BigDecimal("1e+7").toPlainString(), expr.eval("1E+7").toPlainString())
+        assertEquals(BigDecimal("1e-7").toPlainString(), expr.eval("1E-7").toPlainString())
+        assertEquals(BigDecimal(".101e+2").toPlainString(), expr.eval(".101e+2").toPlainString())
+        assertEquals(BigDecimal(".123e2").toPlainString(), expr.eval(".123e2").toPlainString())
+        assertEquals(BigDecimal("3212.123e-2").toPlainString(), expr.eval("3212.123e-2").toPlainString())
+    }
+
+    @Test
+    fun `test normal expression`() {
+        val expr = Expressions()
+        assertEquals(BigDecimal(".123e2").add(BigDecimal("3212.123e-2")).toPlainString(),
+                     expr.eval(".123e2+3212.123e-2").toPlainString())
+        assertEquals(BigDecimal("1e+7").minus(BigDecimal("52132e-2")).toPlainString(),
+                     expr.eval("1E+7-52132e-2").toPlainString())
+    }
+
+    @Test
+    fun `test is functions are ignore case`(){
+        val expr = Expressions()
+        assertEquals(listOf(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ONE).min(),
+                     expr.eval("mIN(-1,0,1)"))
+
+        assertEquals(listOf(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ONE).max(),
+                     expr.eval("MaX(-1,0,1)"))
+    }
+
+    @Test
+    fun `test is variables are ignore case`(){
+        val expr = Expressions()
+        assertEquals(BigDecimal(Math.PI.toString()), expr.eval("pI"))
+        assertEquals(BigDecimal(Math.E.toString()), expr.eval("E"))
+    }
 }
