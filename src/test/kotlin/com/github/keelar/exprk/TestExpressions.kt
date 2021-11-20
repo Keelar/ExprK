@@ -15,7 +15,7 @@ class TestExpressions {
     }
 
     @Test
-    fun `test Scanner will scan scientific form correctly`(){
+    fun `test Scanner will scan scientific form correctly`() {
         val expr = Expressions()
         assertEquals(BigDecimal("1e+7").toPlainString(), expr.eval("1E+7").toPlainString())
         assertEquals(BigDecimal("1e-7").toPlainString(), expr.eval("1E-7").toPlainString())
@@ -34,17 +34,17 @@ class TestExpressions {
     }
 
     @Test
-    fun `test is functions are ignore case`(){
+    fun `test is functions are ignore case`() {
         val expr = Expressions()
-        assertEquals(listOf(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ONE).min(),
+        assertEquals(listOf(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ONE).minOrNull(),
                      expr.eval("mIN(-1,0,1)"))
 
-        assertEquals(listOf(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ONE).max(),
+        assertEquals(listOf(BigDecimal.ONE.negate(), BigDecimal.ZERO, BigDecimal.ONE).maxOrNull(),
                      expr.eval("MaX(-1,0,1)"))
     }
 
     @Test
-    fun `test is variables are ignore case`(){
+    fun `test is variables are ignore case`() {
         val expr = Expressions()
         assertEquals(BigDecimal(Math.PI.toString()), expr.eval("pI"))
         assertEquals(BigDecimal(Math.E.toString()), expr.eval("E"))

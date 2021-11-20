@@ -72,7 +72,7 @@ class Expressions {
                 if (arguments.isEmpty()) throw ExpressionException(
                         "min requires at least one argument")
 
-                return arguments.min()!!
+                return arguments.minOrNull()!!
             }
         })
 
@@ -81,7 +81,7 @@ class Expressions {
                 if (arguments.isEmpty()) throw ExpressionException(
                         "max requires at least one argument")
 
-                return arguments.max()!!
+                return arguments.maxOrNull()!!
             }
         })
 
@@ -191,5 +191,4 @@ class Expressions {
     private fun scan(expression: String): List<Token> {
         return Scanner(expression, evaluator.mathContext).scanTokens()
     }
-
 }
