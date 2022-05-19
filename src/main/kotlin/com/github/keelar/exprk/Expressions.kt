@@ -165,6 +165,26 @@ class Expressions {
         return evaluator.eval(parse(expression))
     }
 
+    fun validateExpression(expression: String, variables: List<String>): Boolean {
+        val tokens = scan(expression)
+        for (token in tokens) {
+            if (token.type == TokenType.IDENTIFIER) {
+                if (!variables.contains(token.lexeme)) {
+                    throw ExpressionException("Unknown variable: ${token.lexeme}")
+                }
+            }
+        }
+        parse(tokens)
+        return true
+    }
+
+    fun evaluateExpression(expression: String, values: Map<String, String>): BigDecimal {
+        for (variable in values.keys) {
+            define(variable, values[variable]!!)
+        }
+        return eval(expression)
+    }
+
 	/**
 	 * eval an expression then round it with {@link Evaluator#mathContext} and call toEngineeringString <br>
 	 * if error will return message from Throwable
