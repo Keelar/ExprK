@@ -126,6 +126,17 @@ internal class Parser(private val tokens: List<Token>) {
             return UnaryExpr(operator, right)
         }
 
+        return sqrt()
+    }
+
+    private fun sqrt(): Expr {
+        if (match(SQUARE_ROOT)) {
+            val operator = previous()
+            val right = unary()
+
+            return UnaryExpr(operator, right)
+        }
+
         return exponent()
     }
 

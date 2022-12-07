@@ -44,6 +44,7 @@ internal class Scanner(private val source: String,
             '/' -> addToken(SLASH)
             '%' -> addToken(MODULO)
             '^' -> addToken(EXPONENT)
+            '√' -> addToken(SQUARE_ROOT)
             '=' -> if (match('=')) addToken(EQUAL_EQUAL) else addToken(ASSIGN)
             '!' -> if (match('=')) addToken(NOT_EQUAL) else invalidToken(c)
             '>' -> if (match('=')) addToken(GREATER_EQUAL) else addToken(GREATER)
