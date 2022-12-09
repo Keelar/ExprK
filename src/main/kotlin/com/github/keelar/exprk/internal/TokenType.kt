@@ -9,6 +9,7 @@ internal enum class TokenType {
     SLASH,
     MODULO,
     EXPONENT,
+    SQUARE_ROOT,
     ASSIGN,
 
     // Logical operators

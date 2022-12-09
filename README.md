@@ -39,6 +39,10 @@ A simple mathematical expression evaluator for Kotlin and Java, written in Kotli
         <td>Exponent</td>
         <td>^</td>
     </tr>
+    <tr>
+        <td>Square root</td>
+        <td>√</td>
+    </tr>
 </table>
 
 #### Logical operators

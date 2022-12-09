@@ -81,6 +81,9 @@ internal class Evaluator() : ExprVisitor<BigDecimal> {
             MINUS -> {
                 right.negate()
             }
+            SQUARE_ROOT -> {
+                right.pow(BigDecimal(0.5))
+            }
             else -> throw ExpressionException("Invalid unary operator")
         }
     }
