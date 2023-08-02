@@ -40,7 +40,7 @@ class Expressions {
         evaluator.addFunction("floor", object : Function() {
             override fun call(arguments: List<BigDecimal>): BigDecimal {
                 if (arguments.size != 1) throw ExpressionException(
-                        "abs requires one argument")
+                        "floor requires one argument")
 
                 return arguments.first().setScale(0, RoundingMode.FLOOR)
             }
@@ -49,7 +49,7 @@ class Expressions {
         evaluator.addFunction("ceil", object : Function() {
             override fun call(arguments: List<BigDecimal>): BigDecimal {
                 if (arguments.size != 1) throw ExpressionException(
-                        "abs requires one argument")
+                        "ceil requires one argument")
 
                 return arguments.first().setScale(0, RoundingMode.CEILING)
             }
